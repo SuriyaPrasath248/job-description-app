@@ -1,0 +1,123 @@
+/* Ensure the body and html take up full height without causing overflow */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+  width: 100%;
+  height: 100%;
+}
+
+/* Root container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  overflow: hidden; /* Prevent internal overflow that might cause scrollbars */
+}
+
+/* Inner login box */
+.login-box {
+  padding: 66px 80px;
+  background-color: #F1F1F1;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+}
+
+/* Logo section */
+.logo-section {
+  position: relative;
+  text-align: center;
+}
+
+.logo-text {
+  font-size: 26px;
+  font-family: 'Aspekta', sans-serif;
+  font-weight: 600;
+  color: #323335;
+  margin-top: 10px;
+}
+
+.logo-image-container {
+  position: relative;
+  width: 123px;
+  height: 123px;
+}
+
+.logo-circle {
+  position: absolute;
+  width: 123px;
+  height: 123px;
+  border-radius: 50%;
+  border: 2.5px solid #6E85F2;
+}
+
+.logo-image {
+  position: absolute;
+  width: 89px;
+  height: 70px;
+  top: 29px;
+  left: 20px;
+}
+
+/* Sign-in buttons */
+.signin-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+/* Google sign-in button */
+.signin-google {
+  width: 406px;
+  padding: 20px 15px;
+  background-color: #6E85F2;
+  border-radius: 5px;
+  border: 2.5px solid;
+  text-align: center;
+  cursor: pointer;
+}
+
+.signin-text {
+  font-size: 22px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: white;
+}
+
+/* Microsoft sign-in button */
+.signin-microsoft {
+  width: 406px;
+  padding: 20px 36px;
+  border: 2.5px solid #6E85F2;
+  text-align: center;
+  cursor: pointer;
+}
+
+.signin-text.microsoft {
+  color: #323335;
+  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .login-box {
+      padding: 40px 20px;
+      gap: 30px;
+  }
+
+  .signin-google, .signin-microsoft {
+      width: 100%;
+  }
+
+  .logo-image-container {
+      width: 100px;
+      height: 100px;
+  }
+}

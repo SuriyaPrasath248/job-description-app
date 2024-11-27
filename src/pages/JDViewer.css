@@ -1,0 +1,90 @@
+/* Reset */
+body, html, .jdviewer-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: #f9f9f9;
+  }
+  
+  /* Container */
+  .jdviewer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Header */
+  .jdviewer-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding: 20px;
+    background: #fff;
+  }
+  
+  .jdviewer-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #323335;
+    margin: 0;
+  }
+  
+  .jdviewer-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .jdviewer-share-button,
+  .jdviewer-create-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid #6e85f2;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .jdviewer-share-button {
+    background: #fff;
+    color: #323335;
+  }
+  
+  .jdviewer-create-button {
+    background: #6e85f2;
+    color: #fff;
+  }
+  
+  /* Content Section */
+  .jdviewer-content {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: hidden;
+  }
+  
+  .jdviewer-scrollable {
+    max-height: 500px; /* Restrict height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fefefe;
+  }
+  
+  .jdviewer-scrollable pre {
+    white-space: pre-wrap; /* Ensure line breaks are respected */
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+  }
+  

@@ -1,0 +1,299 @@
+/* Container for the entire chat interface */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    overflow: hidden; /* Prevent scrolling for the whole page */
+  }
+  
+  /* Header section */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 48px;
+    width: 100%;
+    border-bottom: 2px solid #D8D8D8;
+  }
+  
+  /* Back button styling */
+  .back-button {
+    background-color: #6E85F2;
+    padding: 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Back icon styling */
+  .back-icon {
+    width: 16px;
+    height: 16px;
+    background-color: white;
+  }
+  
+  /* Title in the header */
+  .header-title {
+    font-size: 22px;
+    font-family: 'Aspekta', sans-serif;
+    color: #323335;
+  }
+  
+  /* Logo in the header */
+  .header-logo {
+    width: 75px;
+    height: auto;
+  }
+  
+  /* Wrapper for the content */
+  .content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    width: 100%;
+    height: calc(100vh - 96px); /* Adjusted height excluding header */
+    padding: 50px 0;
+  }
+  
+  /* Chat box container */
+  .chat-box {
+    background-color: #28282B;
+    width: 580px; /* Reduced width to make chat box smaller */
+    height: 680px; /* Reduced height to give space below */
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Chat messages container */
+  .chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px; /* Adjust for scrollbar */
+  }
+  
+  /* Individual chat message bubbles */
+  .message {
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    word-wrap: break-word;
+    max-width: 80%; /* Make the chat bubbles take up 80% of the width */
+    font-size: 18px;
+  }
+  
+  /* User messages */
+  .message.user {
+    background-color: #515358;
+    text-align: left;
+    color: white;
+    margin-left: auto; /* Align user message to the right */
+  }
+  
+  /* Assistant (AI) messages */
+  .message.assistant {
+    background-color: #28282B;
+    text-align: left;
+    color: white;
+    margin-right: auto; /* Align assistant message to the left */
+  }
+  
+  /* Input area for typing messages */
+  .message-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #28282B; /* Background matches the chat container */
+    border-radius: 8px;
+    width: 100%; /* Takes the full width of the chat box */
+  }
+  
+  .input-box {
+    flex-grow: 1;
+    padding: 12px; /* Increased padding */
+    border: none;
+    border-radius: 4px;
+    font-size: 16px; /* Increased font size for the input box */
+    background-color: white; /* White background for input box */
+    color: #000; /* Text color for the input box */
+    margin-right: 10px; /* Space between input and button */
+  }
+  
+  .send-button {
+    background-color: #6E85F2;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px; /* Increased button text size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  /* Job role section */
+  .job-role-box {
+    width: 594px;
+    background-color: #F1F1F1;
+    padding: 30px;
+    border-radius: 10px;
+    font-size: 18px;
+  }
+  
+  /* Generate Job Description button */
+  .generate-jd-button {
+    background-color: #6E85F2;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+ /* Popup background styling */
+.jd-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears on top of other elements */
+}
+
+/* Popup content box */
+.jd-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh; /* Limit height to 80% of the screen */
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Scrollable content for JD */
+/* Ensure the JD content is aligned to the left */
+.jd-scrollable-content {
+  max-height: 60vh; /* Adjust scrollable height */
+  overflow-y: auto; /* Enable scrolling */
+  padding-right: 10px;
+  text-align: left;  /* Align the text to the left */
+}
+
+/* Buttons inside the popup */
+.popup-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+/* Styling for Refine button */
+.refine-button, .finalize-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.refine-button {
+  border: 2px solid #6A6A6A;
+  background-color: white;
+  color: #323335;
+}
+
+.refine-button:hover {
+  background-color: #f0f0f0;
+}
+
+.finalize-button {
+  border: 2px solid #6E85F2;
+  background-color: #6E85F2;
+  color: white;
+}
+
+.finalize-button:hover {
+  background-color: #5e73d2;
+}
+
+  /* Final confirmation popup background styling */
+.final-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Layered above other elements */
+}
+
+/* Final confirmation popup content box */
+.popup-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Popup text styling */
+.popup-content p {
+  font-size: 18px;
+  color: #323335;
+  font-family: 'Aspekta', sans-serif;
+}
+
+/* Popup buttons styling */
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.go-back-button, .confirm-finalize-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.go-back-button {
+  border: 2px solid #6A6A6A;
+  background-color: white;
+  color: #323335;
+}
+
+.go-back-button:hover {
+  background-color: #f0f0f0;
+}
+
+.confirm-finalize-button {
+  border: 2px solid #6E85F2;
+  background-color: #6E85F2;
+  color: white;
+}
+
+.confirm-finalize-button:hover {
+  background-color: #5e73d2;
+}
