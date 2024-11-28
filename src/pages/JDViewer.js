@@ -18,21 +18,21 @@ const JDViewer = () => {
 
   const fetchJobDescription = async () => {
     try {
-      const conversationPath = `ProjectBrainsReact/User/${userEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
-      const docRef = doc(db, conversationPath);
-      const docSnap = await getDoc(docRef);
+        const conversationPath = `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
+        const conversationDocRef = doc(db, conversationPath);
+        const conversationSnapshot = await getDoc(conversationDocRef);
 
-      if (docSnap.exists()) {
-        setJDData(docSnap.data().JDCreated || 'No description available');
-      } else {
-        setJDData('No description available');
-        console.error('No JD found in Firestore.');
-      }
+        if (conversationSnapshot.exists()) {
+            const jdData = conversationSnapshot.data();
+            setJobDescription(jdData?.JDCreated || 'No JD available');
+        } else {
+            setJobDescription('No JD available');
+        }
     } catch (error) {
-      console.error('Error fetching job description:', error);
-      setJDData('Error loading job description.');
+        console.error('Error fetching job description:', error);
     }
-  };
+};
+
 
   const logViewedBy = async () => {
     try {
