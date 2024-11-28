@@ -25,6 +25,7 @@ export const createLink = (conversationNumber, userEmail) => {
     }).toString();
 
     return `https://job-description-app.vercel.app?id=${encodeURIComponent(encrypted)}`;
+    //return `http://localhost:3000?id=${encodeURIComponent(encrypted)}`;
   } catch (error) {
     console.error("Error creating encrypted link:", error);
     return null;

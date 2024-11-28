@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './JobDescription.css';
 import { createLink } from '../Link/LinkGenerator';
-import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, getDoc, arrayUnion } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const JobDescription = () => {
@@ -76,18 +76,30 @@ const JobDescription = () => {
   const handleShareClick = async () => {
     const userEmail = localStorage.getItem('userEmail');
     const conversationNumber = localStorage.getItem('conversationNumber');
-
+    const conversationPath = `ProjectBrainsReact/User/${userEmail}/userdetails/Conversations/Conversation${conversationNumber}`;
+    const conversationDocRef = doc(db, conversationPath);
+  
     try {
       // Generate hash link
       const hashLink = createLink(conversationNumber, userEmail);
       console.log('Generated Hash Link:', hashLink);
-
+  
+      // Push the generated link to Firebase
+      await updateDoc(conversationDocRef, {
+        LinkCreated: hashLink,
+        SharedBy: arrayUnion(userEmail), // Add the current user's email to the SharedBy array
+      });
+  
+      console.log('Link pushed to Firebase successfully.');
+  
       setGeneratedLink(hashLink);
       setShowLinkPopup(true); // Show the Link Popup
     } catch (error) {
-      console.error('Error generating link:', error);
+      console.error('Error generating or pushing link:', error);
     }
   };
+  
+  
 
   return (
     <div className="job-description-page">
