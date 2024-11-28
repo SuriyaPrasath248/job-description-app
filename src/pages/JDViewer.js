@@ -3,40 +3,43 @@ import { getDoc, updateDoc, arrayUnion, doc } from '../firebase/firebase';
 import './JDViewer.css'; // Assuming the styles for JD Viewer are already in this file.
 
 const JDViewer = () => {
-  const [jdData, setJDData] = useState(null);
+  const [jdData, setJDData] = useState(null); // Use setJDData to update job description data
   const [showLinkPopup, setShowLinkPopup] = useState(false);
   const [generatedLink, setGeneratedLink] = useState('');
-  const userEmail = localStorage.getItem('userEmail');
-  const sharedConversationNumber = localStorage.getItem('sharedConversationNumber');
+  const userEmail = localStorage.getItem('userEmail'); // Retrieve logged-in user's email
+  const sharedEmail = localStorage.getItem('sharedEmail'); // Retrieve shared email
+  const sharedConversationNumber = localStorage.getItem('sharedConversationNumber'); // Retrieve conversation number
 
+  // Fetch Job Description and Log ViewedBy on component load
   useEffect(() => {
-    if (sharedConversationNumber && userEmail) {
+    if (sharedConversationNumber && sharedEmail) {
       fetchJobDescription();
       logViewedBy();
     }
-  }, [sharedConversationNumber, userEmail]);
+  }, [sharedConversationNumber, sharedEmail]);
 
+  // Fetch Job Description from Firestore
   const fetchJobDescription = async () => {
     try {
-        const conversationPath = `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
-        const conversationDocRef = doc(db, conversationPath);
-        const conversationSnapshot = await getDoc(conversationDocRef);
+      const conversationPath = `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
+      const conversationDocRef = doc(db, conversationPath); // Use db from firebase.js
+      const conversationSnapshot = await getDoc(conversationDocRef);
 
-        if (conversationSnapshot.exists()) {
-            const jdData = conversationSnapshot.data();
-            setJobDescription(jdData?.JDCreated || 'No JD available');
-        } else {
-            setJobDescription('No JD available');
-        }
+      if (conversationSnapshot.exists()) {
+        const jdData = conversationSnapshot.data();
+        setJDData(jdData?.JDCreated || 'No JD available'); // Update JD data in state
+      } else {
+        setJDData('No JD available'); // Show fallback message if no JD found
+      }
     } catch (error) {
-        console.error('Error fetching job description:', error);
+      console.error('Error fetching job description:', error);
     }
-};
+  };
 
-
+  // Log the current user as a viewer
   const logViewedBy = async () => {
     try {
-      const conversationPath = `ProjectBrainsReact/User/${userEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
+      const conversationPath = `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
       const conversationDocRef = doc(db, conversationPath);
 
       await updateDoc(conversationDocRef, {
@@ -48,9 +51,10 @@ const JDViewer = () => {
     }
   };
 
+  // Handle sharing the link
   const handleShare = async () => {
     try {
-      const conversationPath = `ProjectBrainsReact/User/${userEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
+      const conversationPath = `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
       const conversationDocRef = doc(db, conversationPath);
 
       await updateDoc(conversationDocRef, {
@@ -60,7 +64,7 @@ const JDViewer = () => {
       // Generate a dummy link for sharing (replace with actual logic)
       const hashLink = `https://example.com?id=generatedHashValue`;
       setGeneratedLink(hashLink);
-      setShowLinkPopup(true);
+      setShowLinkPopup(true); // Show the popup with the generated link
       console.log('Link generated and saved to SharedBy.');
     } catch (error) {
       console.error('Error generating or saving link:', error);
