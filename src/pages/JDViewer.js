@@ -1,53 +1,97 @@
 import React, { useEffect, useState } from 'react';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import './JDViewer.css';
+import { getDoc, updateDoc, arrayUnion, doc } from '../firebase/firebase';
+import './JDViewer.css'; // Assuming the styles for JD Viewer are already in this file.
 
 const JDViewer = () => {
-  const [jobDescription, setJobDescription] = useState('No description available');
-  const db = getFirestore();
+  const [jdData, setJDData] = useState(null);
+  const [showLinkPopup, setShowLinkPopup] = useState(false);
+  const [generatedLink, setGeneratedLink] = useState('');
+  const userEmail = localStorage.getItem('userEmail');
+  const sharedConversationNumber = localStorage.getItem('sharedConversationNumber');
 
   useEffect(() => {
-    const fetchJobDescription = async () => {
-      const sharedEmail = localStorage.getItem('sharedEmail');
-      const sharedConversationNumber = localStorage.getItem('sharedConversationNumber');
+    if (sharedConversationNumber && userEmail) {
+      fetchJobDescription();
+      logViewedBy();
+    }
+  }, [sharedConversationNumber, userEmail]);
 
-      if (!sharedEmail || !sharedConversationNumber) {
-        console.error('Missing sharedEmail or sharedConversationNumber in localStorage');
-        return;
+  const fetchJobDescription = async () => {
+    try {
+      const conversationPath = `ProjectBrainsReact/User/${userEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
+      const docRef = doc(db, conversationPath);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setJDData(docSnap.data().JDCreated || 'No description available');
+      } else {
+        setJDData('No description available');
+        console.error('No JD found in Firestore.');
       }
+    } catch (error) {
+      console.error('Error fetching job description:', error);
+      setJDData('Error loading job description.');
+    }
+  };
 
-      try {
-        console.log(`Fetching JD for: ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`);
-        const docRef = doc(db, `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`);
-        const docSnap = await getDoc(docRef);
+  const logViewedBy = async () => {
+    try {
+      const conversationPath = `ProjectBrainsReact/User/${userEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
+      const conversationDocRef = doc(db, conversationPath);
 
-        if (docSnap.exists()) {
-          setJobDescription(docSnap.data().JDCreated || 'No description available');
-        } else {
-          console.error('No such document found!');
-        }
-      } catch (error) {
-        console.error('Error fetching job description:', error);
-      }
-    };
+      await updateDoc(conversationDocRef, {
+        ViewedBy: arrayUnion(userEmail), // Append logged-in user's email to ViewedBy
+      });
+      console.log('User email logged in ViewedBy array.');
+    } catch (error) {
+      console.error('Error logging ViewedBy email:', error);
+    }
+  };
 
-    fetchJobDescription();
-  }, [db]);
+  const handleShare = async () => {
+    try {
+      const conversationPath = `ProjectBrainsReact/User/${userEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
+      const conversationDocRef = doc(db, conversationPath);
+
+      await updateDoc(conversationDocRef, {
+        SharedBy: arrayUnion(userEmail), // Append logged-in user's email to SharedBy
+      });
+
+      // Generate a dummy link for sharing (replace with actual logic)
+      const hashLink = `https://example.com?id=generatedHashValue`;
+      setGeneratedLink(hashLink);
+      setShowLinkPopup(true);
+      console.log('Link generated and saved to SharedBy.');
+    } catch (error) {
+      console.error('Error generating or saving link:', error);
+    }
+  };
 
   return (
     <div className="jdviewer-container">
-      <div className="jdviewer-header">
-        <h1 className="jdviewer-title">Job Description</h1>
+      <header className="jdviewer-header">
+        <h1 className="jdviewer-title">Job Description Viewer</h1>
         <div className="jdviewer-buttons">
-          <button className="jdviewer-share-button">Share</button>
-          <button className="jdviewer-create-button">Create New</button>
+          <button className="jdviewer-share-button" onClick={handleShare}>
+            Share
+          </button>
         </div>
-      </div>
-      <div className="jdviewer-content">
+      </header>
+
+      <section className="jdviewer-content">
         <div className="jdviewer-scrollable">
-          <pre>{jobDescription}</pre>
+          <pre>{jdData || 'Loading...'}</pre>
         </div>
-      </div>
+      </section>
+
+      {/* Link Popup */}
+      {showLinkPopup && (
+        <div className="link-popup">
+          <h2>Link Generated</h2>
+          <p>{generatedLink}</p>
+          <button onClick={() => setShowLinkPopup(false)}>Close</button>
+        </div>
+      )}
     </div>
   );
 };
