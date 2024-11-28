@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getDoc, updateDoc, arrayUnion, doc } from '../firebase/firebase';
+import { db } from '../firebase/firebase';
 import './JDViewer.css'; // Assuming the styles for JD Viewer are already in this file.
 
 const JDViewer = () => {
