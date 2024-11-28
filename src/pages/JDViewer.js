@@ -55,22 +55,32 @@ const JDViewer = () => {
   // Handle sharing the link
   const handleShare = async () => {
     try {
+      // Define the Firestore path to the conversation document
       const conversationPath = `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
       const conversationDocRef = doc(db, conversationPath);
-
-      await updateDoc(conversationDocRef, {
-        SharedBy: arrayUnion(userEmail), // Append logged-in user's email to SharedBy
-      });
-
-      // Generate a dummy link for sharing (replace with actual logic)
-      const hashLink = `https://example.com?id=generatedHashValue`;
-      setGeneratedLink(hashLink);
-      setShowLinkPopup(true); // Show the popup with the generated link
-      console.log('Link generated and saved to SharedBy.');
+  
+      // Fetch the existing conversation document
+      const conversationSnapshot = await getDoc(conversationDocRef);
+  
+      if (conversationSnapshot.exists()) {
+        const conversationData = conversationSnapshot.data();
+  
+        // Check if the LinkCreated field exists
+        if (conversationData.LinkCreated) {
+          setGeneratedLink(conversationData.LinkCreated); // Display the existing link
+          setShowLinkPopup(true); // Show the popup
+          console.log('Link fetched from Firestore and displayed:', conversationData.LinkCreated);
+        } else {
+          console.error('No link found in Firestore.');
+        }
+      } else {
+        console.error('Conversation document does not exist.');
+      }
     } catch (error) {
-      console.error('Error generating or saving link:', error);
+      console.error('Error fetching the link from Firestore:', error);
     }
   };
+  
 
   return (
     <div className="jdviewer-container">
@@ -100,5 +110,6 @@ const JDViewer = () => {
     </div>
   );
 };
+
 
 export default JDViewer;
