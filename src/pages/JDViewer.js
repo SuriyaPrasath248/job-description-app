@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import './JDViewer.css';
 
 const JDViewer = () => {
   const [jobDescription, setJobDescription] = useState('No description available');
@@ -34,9 +35,19 @@ const JDViewer = () => {
   }, [db]);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Job Description Viewer</h1>
-      <p>{jobDescription}</p>
+    <div className="jdviewer-container">
+      <div className="jdviewer-header">
+        <h1 className="jdviewer-title">Job Description</h1>
+        <div className="jdviewer-buttons">
+          <button className="jdviewer-share-button">Share</button>
+          <button className="jdviewer-create-button">Create New</button>
+        </div>
+      </div>
+      <div className="jdviewer-content">
+        <div className="jdviewer-scrollable">
+          <pre>{jobDescription}</pre>
+        </div>
+      </div>
     </div>
   );
 };

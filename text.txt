@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './JobDescription.css';
 import { createLink } from '../Link/LinkGenerator';
 import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const JobDescription = () => {
   const [generatedJD, setGeneratedJD] = useState('');
@@ -12,7 +12,7 @@ const JobDescription = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showLinkPopup, setShowLinkPopup] = useState(false);
   const [generatedLink, setGeneratedLink] = useState('');
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const db = getFirestore();
 
@@ -20,15 +20,15 @@ const JobDescription = () => {
     const jd = localStorage.getItem('generatedJD');
     if (jd) {
       setGeneratedJD(jd);
-      console.log("Loaded Job Description:", jd);
+      console.log('Loaded Job Description:', jd);
     } else {
-      console.error("Job Description not found in localStorage.");
+      console.error('Job Description not found in localStorage.');
     }
   }, []);
 
   const handleFeedbackSubmit = async () => {
     setIsSubmitting(true);
-    console.log("Submitting feedback:", { feedbackRating, feedbackComment });
+    console.log('Submitting feedback:', { feedbackRating, feedbackComment });
 
     const userEmail = localStorage.getItem('userEmail');
     const conversationNumber = localStorage.getItem('conversationNumber');
@@ -38,7 +38,7 @@ const JobDescription = () => {
     try {
       const conversationSnapshot = await getDoc(conversationDocRef);
       if (!conversationSnapshot.exists()) {
-        console.error("Conversation document not found.");
+        console.error('Conversation document not found.');
         return;
       }
 
@@ -52,7 +52,7 @@ const JobDescription = () => {
 
       // Generate hash link
       const hashLink = createLink(conversationNumber, userEmail);
-      console.log("Generated Hash Link:", hashLink);
+      console.log('Generated Hash Link:', hashLink);
 
       // Save the generated link in state to display in the popup
       setGeneratedLink(hashLink);
@@ -62,15 +62,10 @@ const JobDescription = () => {
       setFeedbackComment('');
       setShowLinkPopup(true); // Show link popup
     } catch (error) {
-      console.error("Error submitting feedback:", error);
+      console.error('Error submitting feedback:', error);
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleLinkClick = () => {
-    console.log("Link clicked. Redirecting to login...");
-    navigate("/"); // Redirect to login page
   };
 
   const handleShareClick = async () => {
@@ -158,7 +153,7 @@ const JobDescription = () => {
               placeholder="Enter feedback..."
               value={feedbackComment}
               onChange={(e) => {
-                console.log("Feedback comment updated:", e.target.value);
+                console.log('Feedback comment updated:', e.target.value);
                 setFeedbackComment(e.target.value);
               }}
             ></textarea>

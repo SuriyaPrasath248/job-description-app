@@ -49,10 +49,10 @@ const Login = () => {
 // Login.js
 
 const saveUserToFirestore = async (user) => {
-  const formattedName = formatUserName(user.displayName);
-  const userDocRef = doc(db, 'ProjectBrainsReact', 'User', user.email, 'userdetails');
-  const userListDocRef = doc(db, 'ProjectBrainsReact', 'UserList', user.email, 'userdetails');
-  const emailArrayDocRef = doc(db, 'ProjectBrainsReact', 'UserList');
+const formattedName = formatUserName(user.displayName);
+const userDocRef = doc(db, 'ProjectBrainsReact', 'User', user.email, 'userdetails');
+const userListDocRef = doc(db, 'ProjectBrainsReact', 'UserList', user.email, 'userdetails');
+const emailArrayDocRef = doc(db, 'ProjectBrainsReact', 'UserList');
 
   const defaultUserData = {
     Useremail: user.email,
