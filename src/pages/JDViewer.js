@@ -53,24 +53,35 @@ const JDViewer = () => {
     try {
       const conversationPath = `ProjectBrainsReact/User/${sharedEmail}/userdetails/Conversations/Conversation${sharedConversationNumber}`;
       const conversationDocRef = doc(db, conversationPath);
+  
+      // Fetch the existing document
       const conversationSnapshot = await getDoc(conversationDocRef);
-
+  
       if (conversationSnapshot.exists()) {
         const conversationData = conversationSnapshot.data();
+  
+        // Update SharedBy with the logged-in user's email
+        await updateDoc(conversationDocRef, {
+          SharedBy: arrayUnion(userEmail),
+        });
+        console.log('User email added to SharedBy array.');
+  
+        // Check if LinkCreated exists
         if (conversationData.LinkCreated) {
-          setGeneratedLink(conversationData.LinkCreated);
-          setShowLinkPopup(true);
+          setGeneratedLink(conversationData.LinkCreated); // Set the fetched link
+          setShowLinkPopup(true); // Show the popup
           console.log('Link fetched and displayed:', conversationData.LinkCreated);
         } else {
-          console.error('No link found in Firestore.');
+          console.error('No link found in Firestore for this conversation.');
         }
       } else {
         console.error('Conversation document does not exist.');
       }
     } catch (error) {
-      console.error('Error fetching the link from Firestore:', error);
+      console.error('Error during handleShare operation:', error);
     }
   };
+  
 
   return (
     <div className="jdviewer-container">
