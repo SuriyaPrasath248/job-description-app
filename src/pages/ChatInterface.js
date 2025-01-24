@@ -160,6 +160,7 @@ const handleSendMessage = async () => {
     
     try {
       console.log("Sending request to OpenAI API with precontext and user message");
+      
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
@@ -176,10 +177,11 @@ const handleSendMessage = async () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${apiKey}`
             
+            
           }
         }
       );
-
+      
       const aiResponse = response.data.choices[0].message.content;
       console.log("Received response from OpenAI:", aiResponse);
 
@@ -223,6 +225,7 @@ const generateJobDescription = async () => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`
+          
           
         }
       }
